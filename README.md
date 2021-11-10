@@ -1,4 +1,7 @@
 # Huffman is a compression algorithm
 LAB 02 (iel) 
-This algorithm is provided by : TAHIRI EL Mehdi
-3alaykoum nour
+Work done by: Tahiri El Mehdi
+              Alae-Eddine Kouissi
+              Nada Laamim
+              Ahmed Sidqui
+              El Mustapha Chennouf
