@@ -82,3 +82,90 @@ struct huffman* createAndBuildhuffman(char data[],int freq[], int size){
     buildhuffman(huffman);
     return huffman;
 }
+
+struct node* buildHuffmanTree(char data[],int freq[], int size){
+    struct node *left, *right, *top;
+    struct huffman* huffman = createAndBuildhuffman(data, freq, size);
+    while (!isSizeOne(huffman)) {
+        left = extractMin(huffman);
+        right = extractMin(huffman);
+        top = newNode('$', left->freq + right->freq);
+        top->left = left;
+        top->right = right;
+        inserthuffman(huffman, top);
+    }
+    return extractMin(huffman);
+}
+
+void printCodes(struct node* root, int arr[], int top){
+    if (root->left) {
+        arr[top] = 0;
+        printCodes(root->left, arr, top + 1);
+    }
+    if (root->right) {
+        arr[top] = 1;
+        printCodes(root->right, arr, top + 1);
+    }
+    if (isLeaf(root)) {
+        printf("%c: ", root->data);
+        printArr(arr, top);
+    }
+}
+
+void HuffmanCodes(char data[], int freq[], int size){
+    struct node* root = buildHuffmanTree(data, freq, size);
+    int arr[MAX_TREE_HT], top = 0;
+    printCodes(root, arr, top);
+}
+
+struct node* sorts(struct node* arr, int size) {
+    struct node* array = (struct node*)malloc(size * sizeof(struct node));
+    int i, j;
+    for (i = 0; i < size; i++) {
+
+        int min_index = i;
+        for (j = i+1; j < size; j++) {
+            if (arr[j].freq < arr[min_index].freq) {
+                min_index = j;
+            }
+        }
+
+        if (min_index != i) {
+            struct node tmp = arr[i];
+            arr[i] = arr[min_index];
+            arr[min_index] = tmp;
+        }
+        array[i] = arr[i];
+    }
+    return array;
+}
+
+struct node* getRedundancy(const char* str, int size) {
+    char* string = (char*)malloc(size * sizeof(char));
+    strcpy(string, str);
+    struct node* arr = (struct node*)malloc(size * sizeof(struct node));
+    int i = 0, index = 0, j, count = 1;
+    while (string[i] != '\0') {
+        if (string[i] == '~') {
+            i++;
+            continue;
+        }
+        arr[index].data = string[i];
+        j = i + 1;
+        while (string[j] != '\0') {
+            if (string[i] == string[j]) {
+                count++;
+                string[j] = '~';
+            }
+            j++;
+        }
+        arr[index].freq = count;
+        count = 1;
+        i++;
+        index++;
+    }
+    struct node* array = sorts(arr, index);
+    free(arr);
+    free(string);
+    return array;
+}
