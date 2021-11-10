@@ -60,3 +60,25 @@ void inserthuffman(struct huffman* huffman,struct node* node){
     }
     huffman->array[i] = node;
 }
+
+
+void buildhuffman(struct huffman* huffman){
+    int n = huffman->size - 1;
+    int i;
+    for (i = (n - 1) / 2; i >= 0; --i)
+        sort(huffman, i);
+}
+
+int isLeaf(struct node* root){
+    return !(root->left) && !(root->right);
+}
+
+
+struct huffman* createAndBuildhuffman(char data[],int freq[], int size){
+    struct huffman* huffman = createhuffmanTree(size);
+    for (int i = 0; i < size; ++i)
+        huffman->array[i] = newNode(data[i], freq[i]);
+    huffman->size = size;
+    buildhuffman(huffman);
+    return huffman;
+}
