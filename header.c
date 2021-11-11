@@ -6,6 +6,8 @@ struct node* newNode(char data, unsigned freq){
     temp->data = data;
     temp->freq = freq;
     return temp;
+
+
 }
 
 struct huffman* createhuffmanTree(unsigned capacity){
